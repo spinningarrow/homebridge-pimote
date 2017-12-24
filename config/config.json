@@ -5,12 +5,10 @@
 		"port": 51826,
 		"pin": "031-45-154"
 	},
-
-	"description": "This is an example configuration file with one fake accessory and one fake platform. You can use this as a template for creating your own configuration file containing devices you actually own.",
-
+	"description": "Homebridge for Pimote",
 	"accessories": [
 		{
-			"accessory": "MyAwesomeSwitch",
+			"accessory": "TV",
 			"name": "TV",
 			"room": "Living Room",
 			"getUrl": "http://192.168.1.62:3000",

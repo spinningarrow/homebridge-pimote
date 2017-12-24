@@ -42,11 +42,11 @@ mySwitch.prototype = {
 	getServices: function () {
 		let informationService = new Service.AccessoryInformation();
 		informationService
-			.setCharacteristic(Characteristic.Manufacturer, "Sahil Panasonic")
-			.setCharacteristic(Characteristic.Model, "Some TV model")
+			.setCharacteristic(Characteristic.Manufacturer, "Panasonic")
+			.setCharacteristic(Characteristic.Model, "Some model")
 			.setCharacteristic(Characteristic.SerialNumber, "123-456-789");
 
-		let switchService = new Service.Switch("My switch");
+		let switchService = new Service.Switch("TV");
 		switchService
 			.getCharacteristic(Characteristic.On)
 			.on('get', this.getSwitchOnCharacteristic.bind(this))
@@ -61,6 +61,6 @@ mySwitch.prototype = {
 module.exports = function (homebridge) {
 	Service = homebridge.hap.Service;
 	Characteristic = homebridge.hap.Characteristic;
-	homebridge.registerAccessory("homebridge-pimote", "MyAwesomeSwitch", mySwitch);
+	homebridge.registerAccessory("homebridge-pimote", "TV", mySwitch);
 };
 
