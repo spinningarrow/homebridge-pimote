@@ -11,7 +11,7 @@
     "homebridge-plugin"
   ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "homebridge": "^0.4.33",
     "request": "^2.83.0"
