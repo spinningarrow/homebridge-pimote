@@ -1,66 +1,65 @@
-const request = require('request');
-const url = require('url');
-let Service, Characteristic;
+const request = require('request')
+const url = require('url')
 
-function mySwitch(log, config) {
-	this.log = log;
-	this.getUrl = url.parse(config['getUrl']);
-	this.postUrl = url.parse(config['postUrl']);
-}
+let Service
+let Characteristic
 
-mySwitch.prototype = {
-	getSwitchOnCharacteristic: function (next) {
-		const me = this;
+class TvSwitch {
+	constructor(log, config) {
+		this.log = log
+		this.getUrl = url.parse(config['getUrl'])
+		this.postUrl = url.parse(config['postUrl'])
+	}
+
+	getSwitchOnCharacteristic(next) {
 		request({
-			url: me.getUrl,
+			url: this.getUrl,
 			method: 'GET',
-		}, function (error, response, body) {
+		}, (error, response, body) => {
 			if (error) {
-				me.log('STATUS: ' + response.statusCode);
-				me.log(error.message);
-				return next(error);
+				this.log('STATUS: ' + response.statusCode)
+				this.log(error.message)
+				return next(error)
 			}
-			return next(null, "on");
-		});
-	},
+			return next(null, "on")
+		})
+	}
 
-	setSwitchOnCharacteristic: function (on, next) {
-		const me = this;
+	setSwitchOnCharacteristic(on, next) {
 		request({
-			url: me.postUrl,
+			url: this.postUrl,
 			method: 'GET',
-		}, function (error, response) {
+		}, (error, response) => {
 			if (error) {
-				me.log('STATUS: ' + response.statusCode);
-				me.log(error.message);
-				return next(error);
+				this.log('STATUS: ' + response.statusCode)
+				this.log(error.message)
+				return next(error)
 			}
-			return next();
-		});
-	},
+			return next()
+		})
+	}
 
-	getServices: function () {
-		let informationService = new Service.AccessoryInformation();
+	getServices() {
+		const informationService = new Service.AccessoryInformation()
 		informationService
 			.setCharacteristic(Characteristic.Manufacturer, "Panasonic")
 			.setCharacteristic(Characteristic.Model, "Some model")
-			.setCharacteristic(Characteristic.SerialNumber, "123-456-789");
+			.setCharacteristic(Characteristic.SerialNumber, "123-456-789")
 
-		let switchService = new Service.Switch("TV");
+		const switchService = new Service.Switch("TV")
 		switchService
 			.getCharacteristic(Characteristic.On)
 			.on('get', this.getSwitchOnCharacteristic.bind(this))
-			.on('set', this.setSwitchOnCharacteristic.bind(this));
+			.on('set', this.setSwitchOnCharacteristic.bind(this))
 
-		this.informationService = informationService;
-		this.switchService = switchService;
-		return [informationService, switchService];
+		this.informationService = informationService
+		this.switchService = switchService
+		return [informationService, switchService]
 	}
-};
+}
 
-module.exports = function (homebridge) {
-	Service = homebridge.hap.Service;
-	Characteristic = homebridge.hap.Characteristic;
-	homebridge.registerAccessory("homebridge-pimote", "TV", mySwitch);
-};
-
+module.exports = homebridge => {
+	Service = homebridge.hap.Service
+	Characteristic = homebridge.hap.Characteristic
+	homebridge.registerAccessory("homebridge-pimote", "TV", TvSwitch)
+}
